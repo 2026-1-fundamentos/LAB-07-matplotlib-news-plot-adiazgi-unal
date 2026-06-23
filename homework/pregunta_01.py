@@ -31,10 +31,10 @@ def pregunta_01():
     
     El gráfico debe salvarse al archivo files/plots/news.png.
     """
-    # Crear el directorio si no existe
+  
     os.makedirs('files/plots', exist_ok=True)
     
-    # Buscar el archivo CSV en diferentes ubicaciones posibles
+   
     posibles_ubicaciones = [
         'news.csv',
         'data/news.csv',
@@ -51,7 +51,7 @@ def pregunta_01():
             archivo_encontrado = ubicacion
             break
     
-    # Si no se encuentra, buscar recursivamente archivos .csv
+    
     if archivo_encontrado is None:
         archivos_csv = glob.glob('**/*.csv', recursive=True)
         for archivo in archivos_csv:
@@ -66,7 +66,7 @@ def pregunta_01():
                 continue
     
     if archivo_encontrado is None:
-        # Si no se encuentra, crear los datos manualmente
+       
         print("Archivo CSV no encontrado. Usando datos incorporados.")
         data = {
             'Year': [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010],
@@ -80,16 +80,15 @@ def pregunta_01():
         print(f"Archivo CSV encontrado: {archivo_encontrado}")
         df = pd.read_csv(archivo_encontrado)
     
-    # Verificar que los datos están en el formato correcto
     if 'Year' not in df.columns:
-        # Si la primera columna es el año pero no se llama 'Year'
+      
         if df.columns[0] in ['Año', 'year', 'ano']:
             df.rename(columns={df.columns[0]: 'Year'}, inplace=True)
     
-    # 2. Configurar el estilo y tamaño del gráfico
+  
     plt.figure(figsize=(10, 6))
     
-    # 3. Definir colores y estilos para cada medio
+    
     colors = {
         'Television': 'blue',
         'Newspaper': 'red', 
@@ -103,8 +102,7 @@ def pregunta_01():
         'Radio': '^',
         'Internet': 'D'
     }
-    
-    # 4. Graficar cada serie de datos
+   
     for medium in ['Television', 'Newspaper', 'Radio', 'Internet']:
         if medium in df.columns:
             plt.plot(df['Year'], df[medium], 
@@ -115,26 +113,26 @@ def pregunta_01():
                      linewidth=2,
                      markersize=8)
     
-    # 5. Personalizar el gráfico
+ 
     plt.title('Porcentaje de personas que obtienen noticias\nen diferentes medios (2001-2010)', 
               fontsize=14, fontweight='bold')
     plt.xlabel('Año', fontsize=12)
     plt.ylabel('Porcentaje (%)', fontsize=12)
     
-    # Configurar el eje x para mostrar todos los años
+   
     plt.xticks(df['Year'], rotation=45)
     
-    # Configurar el eje y de 0 a 100
+   
     plt.ylim(0, 100)
     plt.yticks(range(0, 101, 20))
     
-    # Agregar grid
+  
     plt.grid(True, linestyle='--', alpha=0.7)
     
-    # 6. Agregar leyenda
+
     plt.legend(loc='upper left', frameon=True, shadow=True)
     
-    # 7. Ajustar layout y guardar
+  
     plt.tight_layout()
     plt.savefig('files/plots/news.png', dpi=300, bbox_inches='tight')
     plt.close()
